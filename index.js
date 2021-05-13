@@ -1,8 +1,10 @@
 const { PORT = 3000 } = process.env;
 const express = require("express");
 const server = express();
+server.use(express.json());
 const morgan = require("morgan");
 server.use(morgan("dev"));
+require("dotenv").config();
 const dino = `               __
               / _)
      _.----._/ /
@@ -11,9 +13,11 @@ const dino = `               __
 /__.-'|_|--|_|
 `;
 
-server.use((request, response, next) => {
+server.use((req, res, next) => {
+  const now = Date.now();
+  req.timeOfRequest = now;
   console.log("<____Body Logger START____>");
-  console.log(request.body);
+  console.log(req.body);
   console.log("<_____Body Logger END_____>");
 
   next();
@@ -27,5 +31,5 @@ client.connect();
 
 server.listen(PORT, () => {
   console.log("The server is up on port", PORT);
-  //   console.log(dino);
+  console.log(dino);
 });
